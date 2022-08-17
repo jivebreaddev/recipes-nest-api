@@ -64,25 +64,22 @@ describe('UserController', () => {
     expect(user.password).toEqual(stub.password);
   });
 
-  it('SignUp User POST /user username Exists Error Redirection', async () => {
-    const user = await controller.signUp({
-      username: stub.username,
-      password: stub.password,
-    });
+  // it('SignUp User POST /user username Exists Error Redirection', async () => {
+  //   const user = await controller.signUp({
+  //     username: stub.username,
+  //     password: stub.password,
+  //   });
 
-    expect(user.username).toEqual(stub.username);
-    expect(user.password).toEqual(stub.password);
-  });
+  //   expect(user.username).toEqual(stub.username);
+  //   expect(user.password).toEqual(stub.password);
+  // });
 
-  it('SignUp User POST /user password Too Short Redirection', async () => {
-    const user = await controller.signUp({
-      username: stub.username,
-      password: stub.password,
-    });
-
-    expect(user.username).toEqual(stub.username);
-    expect(user.password).toEqual(stub.password);
-  });
+  // it('SignUp User POST /user password Too Short Redirection', async () => {
+  //   const user = await controller.signUp({
+  //     username: stub.username,
+  //     password: stub.password,
+  //   });
+  // });
   it('SignIn User POST /user Successful', async () => {
     const user = await controller.signIn({
       username: stub.username,
