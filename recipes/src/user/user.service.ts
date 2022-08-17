@@ -15,7 +15,7 @@ export class UserService {
       username: createUserDto.username,
       password: createUserDto.password,
     });
-    return user;
+    return this.usersRepository.save(user);
   }
 
   async findAll(): Promise<User[]> {
