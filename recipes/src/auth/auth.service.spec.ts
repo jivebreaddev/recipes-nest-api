@@ -60,17 +60,14 @@ describe('AuthService', () => {
 
   it('SignUp User POST /user password Too Short', async (done) => {
     try {
-      await service.signUp(userInput.username, userInput.password);
+      await service.signUp(userInput.username, '123456');
     } catch (err) {
       done();
     }
   });
-  it('SignIn User POST /user Successful', async (done) => {
-    try {
-      await service.signIn(userInput.username, userInput.password);
-    } catch (err) {
-      done();
-    }
+  it('SignIn User POST /user Successful', async () => {
+    const user = await service.signIn(userInput.username, userInput.password);
+    expect(user).toBeDefined();
   });
   it('SignIn User POST /user Failed', async (done) => {
     try {

@@ -34,7 +34,7 @@ describe('UserController', () => {
       },
     }),
       (fakeAuthService = {
-        signin: (username: string, password: string) => {
+        signIn: (username: string, password: string) => {
           return Promise.resolve(userStub());
         },
       });

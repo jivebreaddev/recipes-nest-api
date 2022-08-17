@@ -27,7 +27,10 @@ export class AuthService {
     if (users) {
       throw new BadRequestException('email in use');
     }
-
+    // This part is trasnferred to Validation in dto with Pipe
+    // if (password.length < 9){
+    //     throw new BadRequestException('password ')
+    // }
     const user = await this.userService.create({
       username: username,
       password: password,
