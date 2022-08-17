@@ -12,7 +12,19 @@ describe('UserService', () => {
     service = module.get<UserService>(UserService);
   });
 
-  it('should be defined', () => {
+  it('User create', () => {
+    expect(service).toBeDefined();
+  });
+  it('User findAll', () => {
+    expect(service).toBeDefined();
+  });
+  it('User findOne', () => {
+    expect(service).toBeDefined();
+  });
+  it('User update', () => {
+    expect(service).toBeDefined();
+  });
+  it('User remove', () => {
     expect(service).toBeDefined();
   });
 });
