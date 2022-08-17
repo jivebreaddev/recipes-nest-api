@@ -53,7 +53,8 @@ describe('UserController', () => {
   });
 
   it('SignUp User POST /user successful', () => {
-    expect(controller).toBeDefined();
+    const user = await controller.signUp();
+    expect(user).
   });
 
   it('SignUp User POST /user username Exists Error Redirection', () => {
@@ -71,6 +72,20 @@ describe('UserController', () => {
     expect(controller).toBeDefined();
   });
   it('SignIn User POST /user Token Invalid Token', () => {
+    expect(controller).toBeDefined();
+  });
+
+  it('create User POST /user', () => {
+    expect(controller).toBeDefined();
+  });
+  it('findAll User GET /user/:username', () => {
+    expect(controller).toBeDefined();
+  });
+
+  it('findAll User GET /user', () => {
+    expect(controller).toBeDefined();
+  });
+  it('update User POST /user', () => {
     expect(controller).toBeDefined();
   });
 });
