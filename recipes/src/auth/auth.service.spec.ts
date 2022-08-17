@@ -43,7 +43,7 @@ describe('AuthService', () => {
     userInput = userStub();
   });
 
-  it('SignUp User POST /user successful', () => {
+  it('SignUp User POST /user successful', async () => {
     const user = await service.signUp(userInput.username, userInput.password);
     expect(user.username).toEqual(userInput.username);
     expect(user.password).toEqual(userInput.password);
@@ -58,21 +58,21 @@ describe('AuthService', () => {
     }
   });
 
-  it('SignUp User POST /user password Too Short', () => {
+  it('SignUp User POST /user password Too Short', async (done) => {
     try {
       await service.signUp(userInput.username, userInput.password);
     } catch (err) {
       done();
     }
   });
-  it('SignIn User POST /user Successful', () => {
+  it('SignIn User POST /user Successful', async (done) => {
     try {
       await service.signIn(userInput.username, userInput.password);
     } catch (err) {
       done();
     }
   });
-  it('SignIn User POST /user Failed', () => {
+  it('SignIn User POST /user Failed', async (done) => {
     try {
       await service.signIn(userInput.username, userInput.password);
     } catch (err) {
