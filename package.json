@@ -1,0 +1,25 @@
+{
+  "name": "recipes-nest-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jivebreaddev/recipes-nest-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jivebreaddev/recipes-nest-api/issues"
+  },
+  "homepage": "https://github.com/jivebreaddev/recipes-nest-api#readme",
+  "dependencies": {
+    "@nestjs/common": "^9.0.11",
+    "@nestjs/platform-express": "^9.0.11",
+    "reflect-metadata": "^0.1.13",
+    "typescript": "^4.7.4"
+  }
+}
