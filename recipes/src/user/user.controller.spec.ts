@@ -12,7 +12,7 @@ describe('UserController', () => {
   let controller: UserController;
   let fakeUserService: Partial<UserService>;
   let fakeAuthService: Partial<AuthService>;
-
+  let stub;
   beforeEach(async () => {
     (fakeUserService = {
       create: (createUserDto: CreateUserDto) => {
@@ -51,22 +51,46 @@ describe('UserController', () => {
     controller = module.get<UserController>(UserController);
     fakeUserService = module.get<UserService>(UserService);
     fakeAuthService = module.get<AuthService>(AuthService);
+    stub = userStub();
   });
 
   it('SignUp User POST /user successful', () => {
-    const user = await controller.signUp();
-    expect(user).
+    const user = await controller.signUp({
+      username: stub.username,
+      password: stub.password,
+    });
+
+    expect(user.username).toEqual(stub.username);
+    expect(user.password).toEqual(stub.password);
   });
 
   it('SignUp User POST /user username Exists Error Redirection', () => {
-    expect(controller).toBeDefined();
+    const user = await controller.signUp({
+      username: stub.username,
+      password: stub.password,
+    });
+
+    expect(user.username).toEqual(stub.username);
+    expect(user.password).toEqual(stub.password);
   });
 
   it('SignUp User POST /user password Too Short Redirection', () => {
-    expect(controller).toBeDefined();
+    const user = await controller.signUp({
+      username: stub.username,
+      password: stub.password,
+    });
+
+    expect(user.username).toEqual(stub.username);
+    expect(user.password).toEqual(stub.password);
   });
   it('SignIn User POST /user Successful', () => {
-    expect(controller).toBeDefined();
+    const user = await controller.signIn({
+      username: stub.username,
+      password: stub.password,
+    });
+
+    expect(user.username).toEqual(stub.username);
+    expect(user.password).toEqual(stub.password);
   });
 
   it('SignIn User POST /user Token Valid Token', () => {
@@ -76,25 +100,25 @@ describe('UserController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('create User POST /user', () => {
-    
-    
-    expect(controller).toBeDefined();
-  });
-  it('findOne User GET /user/:username', () => {
+  it('create User POST /user', () => {});
+
+  it('findOne User GET /user/:username', async () => {
     const user = await controller.findOne(userStub().username);
 
     expect(user.username).toEqual(userStub().username);
   });
 
-  it('findAll User GET /user', () => {
+  it('findAll User GET /user', async () => {
     const users = await controller.findAll();
     expect(users.length).toEqual(1);
   });
-  it('update User POST /user', () => {
-    const users = await controller.update(userStub().username, {username: updatedUserStub().username, password:updatedUserStub().password});
+  it('update User POST /user', async () => {
+    const users = await controller.update(userStub().username, {
+      username: updatedUserStub().username,
+      password: updatedUserStub().password,
+    });
 
     expect(users).toBeDefined();
-    expect(users.username).toEqual(userStub().username)
+    expect(users.username).toEqual(userStub().username);
   });
 });
