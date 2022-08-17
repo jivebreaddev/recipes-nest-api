@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,7 +29,7 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = this.findOne(id);
     if (!user) {
-      throw new NotFoundException('recipe not found2');
+      throw new NotFoundException('recipe not found');
     }
     Object.assign(user, updateUserDto);
     return await user;
