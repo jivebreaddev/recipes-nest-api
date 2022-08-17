@@ -1,5 +1,7 @@
 FROM node:18-alpine
 
+## create user for having non root user
+RUN adduser --disabled-password myuser
 # setting working directory for docker
 WORKDIR /usr/src/app  
 
@@ -17,4 +19,7 @@ COPY ./recipe-api .
 RUN npm run build
 
 EXPOSE 3000
+
+# Start the server using the production build
+USER myuser
 CMD [ "node", "dist/main.js" ]
