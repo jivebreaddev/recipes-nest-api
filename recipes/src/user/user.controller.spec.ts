@@ -21,20 +21,20 @@ describe('UserController', () => {
           password: createUserDto.password,
         } as User);
       },
-      findOne: (id: number) => {
+      findOne: (username: string) => {
         return Promise.resolve(userStub());
       },
       findAll: () => {
         return Promise.resolve([userStub()]);
       },
-      update: (id: number, updateUserDto: UpdateUserDto) => {
+      update: (username: string, updateUserDto: UpdateUserDto) => {
         const user = userStub();
         Object.assign(user, updateUserDto);
         return Promise.resolve(user);
       },
     }),
       (fakeAuthService = {
-        signin: (email: string, password: string) => {
+        signin: (username: string, password: string) => {
           return Promise.resolve(userStub());
         },
       });
@@ -50,10 +50,6 @@ describe('UserController', () => {
     controller = module.get<UserController>(UserController);
     fakeUserService = module.get<UserService>(UserService);
     fakeAuthService = module.get<AuthService>(AuthService);
-  });
-
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
   });
 
   it('SignUp User POST /user successful', () => {

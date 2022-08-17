@@ -22,12 +22,12 @@ export class UserService {
     return await this.usersRepository.find();
   }
 
-  async findOne(id: number): Promise<User> {
-    return await this.usersRepository.findOneBy({ id: id });
+  async findOne(username: string): Promise<User> {
+    return await this.usersRepository.findOneBy({ username: username });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = this.findOne(id);
+  async update(username: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = this.findOne(username);
     if (!user) {
       throw new NotFoundException('recipe not found');
     }
