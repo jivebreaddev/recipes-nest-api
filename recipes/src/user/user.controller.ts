@@ -5,20 +5,19 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
+  constructor(
+    private authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Get()
   findAll() {
@@ -27,7 +26,11 @@ export class UserController {
 
   @Get(':username')
   findOne(@Param('username') username: string) {
-    return this.userService.findOne(username);
+    const user = this.userService.findOne(username);
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    return user;
   }
 
   @Patch(':username')
@@ -36,5 +39,17 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.userService.update(username, updateUserDto);
+  }
+
+  @Post('signup')
+  async signUp(@Body() body: CreateUserDto) {
+    const user = await this.authService.signUp(body.username, body.password);
+    return user;
+  }
+
+  @Post('signin')
+  async signIn(@Body() body: CreateUserDto) {
+    const user = await this.authService.signIn(body.username, body.password);
+    return user;
   }
 }
