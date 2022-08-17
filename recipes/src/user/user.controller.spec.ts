@@ -3,6 +3,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { updatedUserStub } from './stubs/update-user.stub';
 import { userStub } from './stubs/user.stub';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
@@ -76,16 +77,24 @@ describe('UserController', () => {
   });
 
   it('create User POST /user', () => {
+    
+    
     expect(controller).toBeDefined();
   });
-  it('findAll User GET /user/:username', () => {
-    expect(controller).toBeDefined();
+  it('findOne User GET /user/:username', () => {
+    const user = await controller.findOne(userStub().username);
+
+    expect(user.username).toEqual(userStub().username);
   });
 
   it('findAll User GET /user', () => {
-    expect(controller).toBeDefined();
+    const users = await controller.findAll();
+    expect(users.length).toEqual(1);
   });
   it('update User POST /user', () => {
-    expect(controller).toBeDefined();
+    const users = await controller.update(userStub().username, {username: updatedUserStub().username, password:updatedUserStub().password});
+
+    expect(users).toBeDefined();
+    expect(users.username).toEqual(userStub().username)
   });
 });
