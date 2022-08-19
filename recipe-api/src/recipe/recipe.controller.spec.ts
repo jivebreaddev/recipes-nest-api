@@ -16,7 +16,7 @@ describe('RecipeController', () => {
   beforeEach(async () => {
     fakeRecipeService = {
       create: (CreateRecipeDto: CreateRecipeDto) => {
-        return Promise.resolve(recipeStub());
+        return Promise.resolve(CreateRecipeDto);
       },
       findOne: (id: number) => {
         return Promise.resolve(recipeStub());
@@ -30,7 +30,6 @@ describe('RecipeController', () => {
         return Promise.resolve(recipe);
       },
       remove: (id: number) => {
-        const recipe = recipeStub();
         return Promise.resolve();
       },
     };
@@ -45,7 +44,7 @@ describe('RecipeController', () => {
   });
   it('create Recipe POST /recipe', async () => {
     const recipe = await controller.create(recipeStub());
-    expect(recipe.id).toEqual(recipeStub().id);
+    expect(recipe.id).toEqual(stub.id);
   });
 
   it('findOne Recipe GET /recipe/:id', async () => {
@@ -56,7 +55,7 @@ describe('RecipeController', () => {
 
   it('findAll Recipe GET /recipe', async () => {
     const recipes = await controller.findAll();
-    expect(recipes.length).toEqual(1);
+    expect(recipes.length).toEqual(2);
   });
   it('update Recipe POST /recipe', async () => {
     let stub = updatedRecipeStub();

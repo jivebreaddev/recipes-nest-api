@@ -14,7 +14,7 @@ describe('RecipeService', () => {
         return CreateRecipeDto;
       }),
       save: jest.fn().mockImplementation((Recipe) => {
-        return Promise.resolve({ id: 2, ...Recipe });
+        return Promise.resolve({ id: 5, ...Recipe });
       }),
       find: jest.fn().mockImplementation(() => {
         return Promise.resolve([recipeStub(), recipeStub()]);
