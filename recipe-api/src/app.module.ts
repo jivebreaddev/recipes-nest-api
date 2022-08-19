@@ -25,6 +25,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         };
       },
     }),
+    RecipeModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],

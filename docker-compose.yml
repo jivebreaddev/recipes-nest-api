@@ -1,0 +1,27 @@
+services:
+  recipe:
+    build:
+      context: ./
+    volumes:
+      - ./recipe-api:/usr/src/app  
+    env_file:
+    - .env
+    command: npm run start:${NODE_ENV}
+    ports:
+      - 3000:3000
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}_${NODE_ENV}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+      # needs a postgres up entrypoint
+      # needs dev, test, prod control
+volumes:
+  postgres:
