@@ -12,7 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV}`,
+      envFilePath: `.env`,
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -25,12 +25,12 @@ export class AuthService {
   async signUp(username: string, password: string) {
     const users = await this.userService.findOne(username);
     if (users) {
-      throw new BadRequestException('email in use');
+      throw new BadRequestException('username in use');
     }
     // This part is trasnferred to Validation in dto with Pipe
-    // if (password.length < 9){
-    //     throw new BadRequestException('password ')
-    // }
+    if (password.length < 9) {
+      throw new BadRequestException('password is too short');
+    }
     const user = await this.userService.create({
       username: username,
       password: password,
