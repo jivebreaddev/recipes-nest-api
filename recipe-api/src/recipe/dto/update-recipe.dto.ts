@@ -3,6 +3,7 @@ import { CreateRecipeDto } from './create-recipe.dto';
 import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class UpdateRecipeDto extends PartialType(CreateRecipeDto) {
+  @IsOptional()
   @IsNumber()
   id: number;
   @IsOptional()

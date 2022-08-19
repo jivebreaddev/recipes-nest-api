@@ -1,6 +1,6 @@
 import { Recipe } from '../entities/recipe.entity';
 
-export const recipeStub = (): Recipe => {
+export const updatedRecipeStub = (): Recipe => {
   return {
     id: 5,
     title: 'updated',
