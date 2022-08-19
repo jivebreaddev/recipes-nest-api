@@ -1,8 +1,9 @@
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { User } from 'src/user/entities/user.entity';
-import { userStub } from 'src/user/stubs/user.stub';
-import { UserService } from 'src/user/user.service';
+import { userStub } from '../user/stubs/user.stub';
+import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
@@ -49,31 +50,26 @@ describe('AuthService', () => {
     expect(user.password).toEqual(userInput.password);
   });
 
-  it('SignUp User POST /user username Exists Error', async (done) => {
+  it('SignUp User POST /user username Exists Error', async () => {
     await service.signUp(userInput.username, userInput.password);
-    try {
-      await service.signUp(userInput.username, userInput.password);
-    } catch (err) {
-      done();
-    }
+    await expect(
+      service.signUp(userInput.username, userInput.password),
+    ).rejects.toThrow(BadRequestException);
   });
 
-  it('SignUp User POST /user password Too Short', async (done) => {
-    try {
-      await service.signUp(userInput.username, '123456');
-    } catch (err) {
-      done();
-    }
+  it('SignUp User POST /user password Too Short', async () => {
+    await expect(service.signUp(userInput.username, '12346')).rejects.toThrow(
+      BadRequestException,
+    );
   });
   it('SignIn User POST /user Successful', async () => {
+    await service.signUp(userInput.username, userInput.password);
     const user = await service.signIn(userInput.username, userInput.password);
     expect(user).toBeDefined();
   });
-  it('SignIn User POST /user Failed', async (done) => {
-    try {
-      await service.signIn(userInput.username, userInput.password);
-    } catch (err) {
-      done();
-    }
+  it('SignIn User POST /user Failed', async () => {
+    await expect(
+      service.signIn(userInput.username, userInput.password),
+    ).rejects.toThrow(NotFoundException);
   });
 });

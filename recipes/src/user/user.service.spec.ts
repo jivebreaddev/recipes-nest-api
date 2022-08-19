@@ -53,12 +53,11 @@ describe('UserService', () => {
     const users = await service.findOne(userStub().username);
 
     expect(service).toBeDefined();
-    expect(users[0].id).toEqual(userStub().username);
+    expect(users.username).toEqual(userStub().username);
   });
   it('User update', async () => {
     const user = await service.update(userStub().username, userStub());
     expect(service).toBeDefined();
-    expect(user.id).toEqual(userStub().id);
     expect(user.username).toEqual(userStub().username);
   });
 });

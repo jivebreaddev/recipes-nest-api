@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -36,6 +36,9 @@ describe('UserController', () => {
     }),
       (fakeAuthService = {
         signIn: (username: string, password: string) => {
+          return Promise.resolve(userStub());
+        },
+        signUp: (username: string, password: string) => {
           return Promise.resolve(userStub());
         },
       });
@@ -116,6 +119,6 @@ describe('UserController', () => {
     });
 
     expect(users).toBeDefined();
-    expect(users.username).toEqual(userStub().username);
+    expect(users.username).toEqual(updatedUserStub().username);
   });
 });
