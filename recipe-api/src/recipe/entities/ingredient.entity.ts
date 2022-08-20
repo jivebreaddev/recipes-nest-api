@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 
 export class Ingredient {
   @PrimaryGeneratedColumn()
@@ -6,4 +12,7 @@ export class Ingredient {
 
   @Column()
   name: string;
+
+  @ManyToOne(() => Ingredient, (ingredient) => ingredient.recipe)
+  recipe: Recipe;
 }
