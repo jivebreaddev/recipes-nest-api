@@ -27,11 +27,11 @@ export class UserService {
   }
 
   async update(username: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = this.findOne(username);
+    const user = await this.findOne(username);
     if (!user) {
       throw new NotFoundException('recipe not found');
     }
     Object.assign(user, updateUserDto);
-    return await user;
+    return user;
   }
 }

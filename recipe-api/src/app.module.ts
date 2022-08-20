@@ -6,6 +6,7 @@ import { AuthService } from './auth/auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RecipeModule } from './recipe/recipe.module';
 
 @Module({
   imports: [
