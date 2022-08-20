@@ -1,9 +1,9 @@
-import { PrimaryGeneratedColumn } from 'typeorm';
+import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export class Tag {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @IsColumn()
+  @Column()
   title: string;
 }

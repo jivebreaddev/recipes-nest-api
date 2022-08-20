@@ -8,22 +8,25 @@ import { Tag } from './entities/tag.entity';
 
 @Injectable()
 export class TagService {
-  constructor(@InjectRepository(Tag) private repository: Repository<Tag>) {}
+  constructor(@InjectRepository(Tag) private tagRepository: Repository<Tag>) {}
   async create(createTagDto: CreateTagDto) {
-    const tag = await this.repository.create({
-      id: createTagDto.id,
+    const tag = await this.tagRepository.create({
       title: createTagDto.title,
     });
 
-    this.repository.save(tag);
+    return await this.tagRepository.save(tag);
   }
 
-  async findAll() {
-    return await this.repository.find();
+  async findAll(): Promise<Tag[]> {
+    return await this.tagRepository.find();
   }
 
   async findOne(id: number) {
-    return await this.repository.findBy({ id: id });
+    const tag = await this.tagRepository.findOneBy({ id: id });
+    if (!tag) {
+      throw new NotFoundException('Not Found Exception');
+    }
+    return tag;
   }
 
   async update(id: number, updateTagDto: UpdateTagDto) {
@@ -31,7 +34,7 @@ export class TagService {
     if (!tag) {
       throw new NotFoundException('Not Found Exception');
     }
-    return await this.repository.save(tag);
+    return await this.tagRepository.save(tag);
   }
 
   async remove(id: number) {
@@ -39,6 +42,6 @@ export class TagService {
     if (!tag) {
       throw new NotFoundException('Not Found Exception');
     }
-    return await this.repository.remove(tag);
+    return await this.tagRepository.remove(tag);
   }
 }

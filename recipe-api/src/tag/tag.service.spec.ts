@@ -12,12 +12,15 @@ describe('TagService', () => {
   beforeEach(async () => {
     const fakeRepository = {
       create: jest.fn().mockImplementation((createTagDto: CreateTagDto) => {
-        return Promise.resolve(CreateTagDto);
+        return Promise.resolve(createTagDto);
       }),
-      findAll: jest.fn().mockImplementation(() => {
+      save: jest.fn().mockImplementation((tag) => {
+        return Promise.resolve({ id: 3, ...tag });
+      }),
+      find: jest.fn().mockImplementation(() => {
         return Promise.resolve([tagStub(), tagStub()]);
       }),
-      findOne: jest.fn().mockImplementation(() => {
+      findOneBy: jest.fn().mockImplementation((id: number) => {
         return Promise.resolve(tagStub());
       }),
       update: jest.fn().mockImplementation((id: number, updateTagDto) => {

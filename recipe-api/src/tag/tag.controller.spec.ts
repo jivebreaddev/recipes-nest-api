@@ -12,20 +12,20 @@ describe('TagController', () => {
   let fakeTagService: Partial<TagService>;
   beforeEach(async () => {
     fakeTagService = {
-      create: (createRecipeDto: CreateRecipeDto) => {
-        Promise.resolve(createRecipeDto);
+      create: async (createRecipeDto: CreateRecipeDto) => {
+        return Promise.resolve(createRecipeDto);
       },
-      findOne: (id: number) => {
-        Promise.resolve(tagStub());
+      findOne: async (id: number) => {
+        return Promise.resolve(tagStub());
       },
-      findAll: () => {
-        Promise.resolve([tagStub(), tagStub()]);
+      findAll: async () => {
+        return Promise.resolve([tagStub(), tagStub()]);
       },
-      update: (id: number, updateTagDto: UpdateTagDto) => {
-        Promise.resolve(updatedTagStub());
+      update: async (id: number, updateTagDto: UpdateTagDto) => {
+        return Promise.resolve(updatedTagStub());
       },
-      remove: (id: number) => {
-        Promise.resolve();
+      remove: async (id: number) => {
+        return Promise.resolve(tagStub());
       },
     };
 
@@ -60,6 +60,6 @@ describe('TagController', () => {
       id: updatedTagStub().id,
       title: updatedTagStub().title,
     });
-    expect(tag.id.toString()).toEqual(updatedTagStub().id);
+    expect(tag.id).toEqual(updatedTagStub().id);
   });
 });
