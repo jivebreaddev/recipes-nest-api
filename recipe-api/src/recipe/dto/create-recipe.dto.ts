@@ -12,3 +12,4 @@ export class CreateRecipeDto {
   @IsNumber()
   price: number;
 }
+
