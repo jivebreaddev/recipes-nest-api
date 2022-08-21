@@ -23,6 +23,8 @@ export class Recipe {
   @Column()
   price: number;
 
-  @OneToMany(() => Ingredient, (ingredient) => ingredient.recipe)
+  @OneToMany(() => Ingredient, (ingredient) => ingredient.recipe, {
+    cascade: true,
+  })
   ingredient: Ingredient[];
 }

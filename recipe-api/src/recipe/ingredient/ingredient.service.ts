@@ -8,10 +8,7 @@ import { RecipeService } from '../recipe.service';
 
 @Injectable()
 export class IngredientService {
-  constructor(
-    @InjectRepository(Ingredient) private ingredientRepository,
-    private recipeService: RecipeService,
-  ) {}
+  constructor(@InjectRepository(Ingredient) private ingredientRepository) {}
 
   async create(CreateIngredientDto, recipe) {
     const ingredient = this.ingredientRepository.create({
@@ -20,19 +17,19 @@ export class IngredientService {
     ingredient.recipe = recipe;
     return this.ingredientRepository.save(ingredient);
   }
-  async findAll(id) {
-    const recipe = await this.recipeService.findOne(id);
-    let ingredients_id = recipe.ingredients;
-
-    let ingredients = this.ingredientRepository.findBy({
-      id: In(ingredients_id),
-    });
-
+  async findAll() {
+    const ingredients = await this.ingredientRepository.find();
     return ingredients;
   }
 
   async findOne(id: number) {
-    return this.ingredientRepository.findOneBy({ id: id });
+    const ingredients = await this.ingredientRepository.findBy({
+      id: id,
+    });
+    if (id) {
+      throw new NotFoundException('Ingredient Id is not found');
+    }
+    return ingredients;
   }
   async update(id: number, updateIngredientDto: UpdateIngredientDto) {
     const ingredient = await this.ingredientRepository.findOneBy({ id: id });
