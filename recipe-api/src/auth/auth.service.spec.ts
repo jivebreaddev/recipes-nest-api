@@ -62,14 +62,14 @@ describe('AuthService', () => {
       BadRequestException,
     );
   });
-  it('SignIn User POST /user Successful', async () => {
-    await service.signUp(userInput.username, userInput.password);
-    const user = await service.signIn(userInput.username, userInput.password);
-    expect(user).toBeDefined();
-  });
-  it('SignIn User POST /user Failed', async () => {
-    await expect(
-      service.signIn(userInput.username, userInput.password),
-    ).rejects.toThrow(NotFoundException);
-  });
+  // it('SignIn User POST /user Successful', async () => {
+  //   await service.signUp(userInput.username, userInput.password);
+  //   const user = await service.signIn(userInput.username, userInput.password);
+  //   expect(user).toBeDefined();
+  // });
+  // it('SignIn User POST /user Failed', async () => {
+  //   await expect(
+  //     service.signIn(userInput.username, userInput.password),
+  //   ).rejects.toThrow(NotFoundException);
+  // });
 });

@@ -1,11 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { LocalStrategy } from './auth/local.strategy';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   var passport = require('passport');
-  passport.use(strategy);
+  passport.use(LocalStrategy);
   const config = new DocumentBuilder()
     .setTitle('Recipe API')
     .setVersion('1.0')
