@@ -1,13 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
+import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { Ingredient } from './entities/ingredient.entity';
 import { Recipe } from './entities/recipe.entity';
 
 @Injectable()
 export class RecipeService {
   constructor(
+    @InjectRepository(Ingredient)
+    private ingredientRepository: Repository<Ingredient>,
     @InjectRepository(Recipe) private repository: Repository<Recipe>,
   ) {}
   async create(createRecipeDto: CreateRecipeDto) {
@@ -16,14 +21,19 @@ export class RecipeService {
       description: createRecipeDto.description,
       time_minutes: createRecipeDto.time_minutes,
       price: createRecipeDto.price,
+      ingredient: [],
     });
-    return this.repository.save(recipe);
+
+    return await this.repository.save(recipe);
   }
   async findAll() {
-    return this.repository.find();
+    return await this.repository.find();
   }
   async findOne(id: number) {
-    return this.repository.findOneBy({ id: id });
+    return await this.repository.findOne({
+      where: { id: id },
+      relations: ['ingredient'],
+    });
   }
 
   async update(id: number, updateRecipeDto: UpdateRecipeDto) {
@@ -42,5 +52,48 @@ export class RecipeService {
     }
 
     this.repository.remove(recipe);
+  }
+
+  async addIngredient(
+    recipeid: number,
+    updateIngredientDto: UpdateIngredientDto,
+  ) {
+    const recipe = await this.findOne(recipeid);
+    const ingredient = await this.ingredientRepository.create(
+      updateIngredientDto,
+    );
+    recipe.ingredient.push(ingredient);
+    return await this.repository.save(recipe);
+  }
+
+  async removeIngredient(
+    recipeid: number,
+    updateIngredientDto: UpdateIngredientDto,
+  ) {
+    const recipe = await this.findOne(recipeid);
+    if (!recipe) {
+      throw new NotFoundException('Ingredient Not Found');
+    }
+    recipe.ingredient = recipe.ingredient.filter((ingred) => {
+      ingred.name !== updateIngredientDto.name;
+    });
+    return await this.repository.save(recipe);
+  }
+  async updateIngredient(
+    recipeid: number,
+    updateIngredientDtos: UpdateIngredientDto[],
+  ) {
+    const recipe = await this.findOne(recipeid);
+    if (!recipe) {
+      throw new NotFoundException('Ingredient Not Found');
+    }
+    recipe.ingredient = [];
+    for (let i = 0; i < updateIngredientDtos.length; i++) {
+      const ingredient = await this.ingredientRepository.create(
+        updateIngredientDtos[i],
+      );
+      recipe.ingredient.push(ingredient);
+    }
+    return await this.repository.save(recipe);
   }
 }

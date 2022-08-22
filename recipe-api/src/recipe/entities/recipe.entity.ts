@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { Ingredient } from './ingredient.entity';
 
 export class Recipe {
   @PrimaryGeneratedColumn()
@@ -15,4 +22,9 @@ export class Recipe {
 
   @Column()
   price: number;
+
+  @OneToMany(() => Ingredient, (ingredient) => ingredient.recipe, {
+    cascade: true,
+  })
+  ingredient: Ingredient[];
 }
