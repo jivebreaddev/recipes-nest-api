@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RecipeModule } from './recipe/recipe.module';
 import { Recipe } from './recipe/entities/recipe.entity';
 import { Ingredient } from './recipe/entities/ingredient.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { Ingredient } from './recipe/entities/ingredient.entity';
       },
     }),
     RecipeModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService],

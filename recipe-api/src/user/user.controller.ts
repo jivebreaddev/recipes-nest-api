@@ -7,6 +7,7 @@ import {
   Param,
   NotFoundException,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -51,8 +52,7 @@ export class UserController {
   }
   @UseGuards(AuthGuard('local'))
   @Post('signin')
-  async signIn(@Body() body: CreateUserDto) {
-    const user = await this.authService.signIn(body.username, body.password);
-    return user;
+  async signIn(@Request() req) {
+    return req.user;
   }
 }

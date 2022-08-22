@@ -11,24 +11,20 @@ export class AuthService {
 
   async validateUser(username: string, password: string) {
     const user = await this.userService.findOne(username);
+    if (!user) {
+      throw new NotFoundException('User Not found');
+    }
+
+    if (user.password !== password) {
+      throw new BadRequestException('Bad Password');
+    }
     if (user && user.password === password) {
       const { password, ...result } = user;
       return result;
     }
     return null;
   }
-  async signIn(username: string, password: string) {
-    const users = await this.userService.findOne(username);
-    if (!users) {
-      throw new NotFoundException('User Not found');
-    }
-
-    if (users.password !== password) {
-      throw new BadRequestException('Bad Password');
-    }
-
-    return users;
-  }
+  async signIn(user: any) {}
 
   async signUp(username: string, password: string) {
     const users = await this.userService.findOne(username);
