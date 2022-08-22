@@ -1,4 +1,5 @@
 import { IsNumber, IsString, IsOptional } from 'class-validator';
+import { Ingredient } from '../entities/ingredient.entity';
 export class CreateRecipeDto {
   @IsNumber()
   id: number;
@@ -11,5 +12,6 @@ export class CreateRecipeDto {
   time_minutes: number;
   @IsNumber()
   price: number;
+  @IsOptional()
+  ingredient: Ingredient[];
 }
-

@@ -7,6 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RecipeModule } from './recipe/recipe.module';
+import { Recipe } from './recipe/entities/recipe.entity';
+import { Ingredient } from './recipe/entities/ingredient.entity';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { RecipeModule } from './recipe/recipe.module';
           type: 'sqlite',
           database: config.get<string>('DB_NAME'),
           synchronize: true,
-          entities: [User],
+          entities: [User, Recipe, Ingredient],
         };
       },
     }),

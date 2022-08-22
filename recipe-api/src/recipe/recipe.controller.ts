@@ -41,9 +41,12 @@ export class RecipeController {
     return this.recipeService.remove(+id);
   }
 
-  @Post('/ingredient')
-  create_ingredient(@Body() createIngredientDto: CreateIngredientDto) {
-    return this.ingredientService.create(createIngredientDto);
+  @Post('/ingredient/:id')
+  create_ingredient(
+    @Param('id') id: string,
+    @Body() createIngredientDto: CreateIngredientDto,
+  ) {
+    return this.ingredientService.create(+id, createIngredientDto);
   }
   @Get('/ingredient')
   findAll_ingredient() {

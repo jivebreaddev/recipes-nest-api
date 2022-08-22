@@ -22,6 +22,7 @@ export class RecipeService {
       time_minutes: createRecipeDto.time_minutes,
       price: createRecipeDto.price,
     });
+
     return await this.repository.save(recipe);
   }
   async findAll() {
@@ -66,25 +67,31 @@ export class RecipeService {
 
   async removeIngredient(
     recipeid: number,
-    createIngredientDto: CreateIngredientDto,
+    updateIngredientDto: UpdateIngredientDto,
   ) {
     const recipe = await this.findOne(recipeid);
-    const ingredient = await this.ingredientRepository.create(
-      createIngredientDto,
-    );
-    recipe.ingredient.push(ingredient);
+    if (!recipe) {
+      throw new NotFoundException('Ingredient Not Found');
+    }
+    recipe.ingredient = recipe.ingredient.filter((ingred) => {
+      ingred.name !== ingred.name;
+    });
     return await this.repository.save(recipe);
   }
   async updateIngredient(
     recipeid: number,
-    createIngredientDto: CreateIngredientDto[],
+    updateIngredientDtos: UpdateIngredientDto[],
   ) {
     const recipe = await this.findOne(recipeid);
-    const ingredient = await this.ingredientRepository.create(
-      createIngredientDto,
-    );
-    recipe.ingredient.push(ingredient);
-
-    return await this.repository.save(recipe);
+    if (!recipe) {
+      throw new NotFoundException('Ingredient Not Found');
+    }
+    recipe.ingredient = [];
+    for (let i = 0; i < updateIngredientDtos.length; i++) {
+      const ingredient = await this.ingredientRepository.create(
+        updateIngredientDtos[i],
+      );
+      recipe.ingredient.push(ingredient);
+    }
   }
 }

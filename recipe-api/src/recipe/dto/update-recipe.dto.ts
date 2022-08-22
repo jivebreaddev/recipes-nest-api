@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateRecipeDto } from './create-recipe.dto';
 import { IsNumber, IsString, IsOptional } from 'class-validator';
+import { Ingredient } from '../entities/ingredient.entity';
 
 export class UpdateRecipeDto extends PartialType(CreateRecipeDto) {
   @IsOptional()
@@ -18,4 +19,6 @@ export class UpdateRecipeDto extends PartialType(CreateRecipeDto) {
   @IsOptional()
   @IsNumber()
   price: number;
+  @IsOptional()
+  ingredient: Ingredient[];
 }

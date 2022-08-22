@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  ManyToOne,
-} from 'typeorm';
+import { Column, ManyToOne } from 'typeorm';
 import { Recipe } from './recipe.entity';
 
 export class Ingredient {

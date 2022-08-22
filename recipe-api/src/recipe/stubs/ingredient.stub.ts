@@ -1,9 +1,5 @@
-import { Ingredient } from '../entities/ingredient.entity';
-
-export const updatedIngredientStub = (): Ingredient => {
+export const UpdateIngredientStub = () => {
   return {
-    id: 5,
     name: 'updated',
-    recipe: [3],
   };
 };
