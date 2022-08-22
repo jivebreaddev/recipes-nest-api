@@ -22,12 +22,12 @@ export class UserController {
     private authService: AuthService,
     private readonly userService: UserService,
   ) {}
-
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   findAll() {
     return this.userService.findAll();
   }
-
+  @UseGuards(AuthGuard('jwt'))
   @Get(':username')
   findOne(@Param('username') username: string) {
     const user = this.userService.findOne(username);
@@ -36,7 +36,7 @@ export class UserController {
     }
     return user;
   }
-
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':username')
   update(
     @Param('username') username: string,
@@ -53,6 +53,6 @@ export class UserController {
   @UseGuards(AuthGuard('local'))
   @Post('signin')
   async signIn(@Request() req) {
-    return req.user;
+    return this.authService.signIn(req.user);
   }
 }
