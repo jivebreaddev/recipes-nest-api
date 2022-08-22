@@ -13,7 +13,8 @@ import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { IngredientService } from './ingredient/ingredient.service';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('recipe')
 @Controller('recipe')
 export class RecipeController {
   constructor(
