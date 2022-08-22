@@ -22,25 +22,29 @@ export class IngredientService {
     return ingredients;
   }
 
-  async findOne(id: number) {
+  async findOne(name: string) {
     const ingredients = await this.ingredientRepository.findBy({
-      id: id,
+      name: name,
     });
-    if (id) {
-      throw new NotFoundException('Ingredient Id is not found');
+    if (!ingredients) {
+      throw new NotFoundException('Ingredient name is not found');
     }
     return ingredients;
   }
-  async update(id: number, updateIngredientDto: UpdateIngredientDto) {
-    const ingredient = await this.ingredientRepository.findOneBy({ id: id });
+  async update(name: string, updateIngredientDto: UpdateIngredientDto) {
+    const ingredient = await this.ingredientRepository.findOneBy({
+      name: name,
+    });
     if (!ingredient) {
       throw new NotFoundException('ingredient not found');
     }
     Object.assign(ingredient, updateIngredientDto);
     return ingredient;
   }
-  async remove(id: number) {
-    const ingredient = await this.ingredientRepository.findOneBy({ id: id });
+  async remove(name: string) {
+    const ingredient = await this.ingredientRepository.findOneBy({
+      name: name,
+    });
     if (!ingredient) {
       throw new NotFoundException('ingredient not found');
     }

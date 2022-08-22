@@ -41,30 +41,30 @@ export class RecipeController {
     return this.recipeService.remove(+id);
   }
 
-  @Post('/ingredient/:id')
+  @Patch(':id/ingredient')
   create_ingredient(
     @Param('id') id: string,
     @Body() createIngredientDto: CreateIngredientDto,
   ) {
-    return this.ingredientService.create(+id, createIngredientDto);
+    return this.recipeService.addIngredient(+id, createIngredientDto);
   }
   @Get('/ingredient')
   findAll_ingredient() {
     return this.ingredientService.findAll();
   }
-  @Get('/ingredient/:id')
-  findOne_ingredient(@Param('id') id: string) {
-    return this.ingredientService.findOne(+id);
-  }
-  @Patch('/ingredient/:id')
+
+  @Delete(':id/ingredient')
   update_ingredient(
     @Param('id') id: string,
     @Body() updateIngredientDto: UpdateIngredientDto,
   ) {
-    return this.ingredientService.update(+id, updateIngredientDto);
+    return this.recipeService.removeIngredient(+id, updateIngredientDto);
   }
-  @Delete('/ingredient/:id')
-  remove_ingredient(@Param('id') id: string) {
-    return this.ingredientService.remove(+id);
+  @Patch(':id/ingredient')
+  remove_ingredient(
+    @Param('id') id: string,
+    @Body() updateIngredientDto: UpdateIngredientDto[],
+  ) {
+    return this.recipeService.updateIngredient(+id, updateIngredientDto);
   }
 }
