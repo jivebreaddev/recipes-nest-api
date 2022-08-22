@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { Ingredient } from './entities/ingredient.entity';
 import { Recipe } from './entities/recipe.entity';
 import { RecipeService } from './recipe.service';
 import { recipeStub } from './stubs/recipe.stub';
@@ -19,7 +20,10 @@ describe('RecipeService', () => {
       find: jest.fn().mockImplementation(() => {
         return Promise.resolve([recipeStub(), recipeStub()]);
       }),
-      findOneBy: jest.fn().mockImplementation((id) => {
+      findOne: jest.fn().mockImplementation((find_option) => {
+        return Promise.resolve(recipeStub());
+      }),
+      findOneBy: jest.fn().mockImplementation((find_option) => {
         return Promise.resolve(recipeStub());
       }),
     };
@@ -28,6 +32,7 @@ describe('RecipeService', () => {
       providers: [
         RecipeService,
         { provide: getRepositoryToken(Recipe), useValue: mockRepository },
+        { provide: getRepositoryToken(Ingredient), useValue: mockRepository },
       ],
     }).compile();
 

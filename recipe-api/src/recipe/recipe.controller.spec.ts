@@ -4,6 +4,7 @@ import { UserService } from 'src/user/user.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { Recipe } from './entities/recipe.entity';
+import { IngredientService } from './ingredient/ingredient.service';
 import { RecipeController } from './recipe.controller';
 import { RecipeService } from './recipe.service';
 import { recipeStub } from './stubs/recipe.stub';
@@ -36,7 +37,10 @@ describe('RecipeController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [RecipeController],
-      providers: [{ provide: RecipeService, useValue: fakeRecipeService }],
+      providers: [
+        { provide: RecipeService, useValue: fakeRecipeService },
+        { provide: IngredientService, useValue: fakeRecipeService },
+      ],
     }).compile();
 
     controller = module.get<RecipeController>(RecipeController);
