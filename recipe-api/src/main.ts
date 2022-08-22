@@ -4,6 +4,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  var passport = require('passport');
+  passport.use(strategy);
   const config = new DocumentBuilder()
     .setTitle('Recipe API')
     .setVersion('1.0')

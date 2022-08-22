@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -47,7 +49,7 @@ export class UserController {
     const user = await this.authService.signUp(body.username, body.password);
     return user;
   }
-
+  @UseGuards(AuthGuard('local'))
   @Post('signin')
   async signIn(@Body() body: CreateUserDto) {
     const user = await this.authService.signIn(body.username, body.password);

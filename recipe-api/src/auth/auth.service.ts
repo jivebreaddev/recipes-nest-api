@@ -9,6 +9,14 @@ import { UserService } from '../user/user.service';
 export class AuthService {
   constructor(private userService: UserService) {}
 
+  async validateUser(username: string, password: string) {
+    const user = await this.userService.findOne(username);
+    if (user && user.password === password) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
   async signIn(username: string, password: string) {
     const users = await this.userService.findOne(username);
     if (!users) {
