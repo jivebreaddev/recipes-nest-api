@@ -21,6 +21,7 @@ export class RecipeService {
       description: createRecipeDto.description,
       time_minutes: createRecipeDto.time_minutes,
       price: createRecipeDto.price,
+      ingredient: [],
     });
 
     return await this.repository.save(recipe);
@@ -55,11 +56,11 @@ export class RecipeService {
 
   async addIngredient(
     recipeid: number,
-    createIngredientDto: CreateIngredientDto,
+    updateIngredientDto: UpdateIngredientDto,
   ) {
     const recipe = await this.findOne(recipeid);
     const ingredient = await this.ingredientRepository.create(
-      createIngredientDto,
+      updateIngredientDto,
     );
     recipe.ingredient.push(ingredient);
     return await this.repository.save(recipe);
@@ -74,7 +75,7 @@ export class RecipeService {
       throw new NotFoundException('Ingredient Not Found');
     }
     recipe.ingredient = recipe.ingredient.filter((ingred) => {
-      ingred.name !== ingred.name;
+      ingred.name !== updateIngredientDto.name;
     });
     return await this.repository.save(recipe);
   }
@@ -93,5 +94,6 @@ export class RecipeService {
       );
       recipe.ingredient.push(ingredient);
     }
+    return await this.repository.save(recipe);
   }
 }

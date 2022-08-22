@@ -11,7 +11,7 @@ export class IngredientService {
   constructor(@InjectRepository(Ingredient) private ingredientRepository) {}
 
   async create(CreateIngredientDto, recipe) {
-    const ingredient = this.ingredientRepository.create({
+    const ingredient = await this.ingredientRepository.create({
       ...CreateIngredientDto,
     });
     ingredient.recipe = recipe;
@@ -49,6 +49,6 @@ export class IngredientService {
       throw new NotFoundException('ingredient not found');
     }
 
-    this.ingredientRepository.remove(ingredient);
+    await this.ingredientRepository.remove(ingredient);
   }
 }
