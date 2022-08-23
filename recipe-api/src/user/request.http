@@ -1,0 +1,37 @@
+### CREATE A NEW USER
+POST http://localhost:3000/user/signup
+content-type: application/json
+
+{
+    "username": "agsdafsdvec",
+    "password": "asdfasgsdf123"
+}
+
+### Find a user with given ID
+
+POST http://localhost:3000/user/signin
+content-type: application/json
+
+{
+    "username": "agsdafsdvec",
+    "password": "asdfasgsdf123"
+}
+### Find all users with agiven email
+
+GET http://localhost:3000/user
+
+### Find a user given id
+
+DELETE http://localhost:3000/user/agsdafsdvec
+
+
+### Update a user
+
+PATCH http://localhost:3000/user/agsdafsdvec
+content-type: application/json
+
+{
+    "password": "aaaaasdas"
+}
+
+
