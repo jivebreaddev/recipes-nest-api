@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { User } from 'src/user/entities/user.entity';
 import { updatedUserStub } from 'src/user/stubs/update-user.stub';
+import { userStub } from 'src/user/stubs/user.stub';
 import { UserService } from 'src/user/user.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
@@ -13,22 +15,22 @@ import { updatedRecipeStub } from './stubs/recipe.updated.stub';
 describe('RecipeController', () => {
   let controller: RecipeController;
   let fakeRecipeService: Partial<RecipeService>;
-  let stub: Recipe;
+  let stub: CreateRecipeDto;
   beforeEach(async () => {
     fakeRecipeService = {
-      create: (CreateRecipeDto: CreateRecipeDto) => {
-        return Promise.resolve(CreateRecipeDto);
+      create: (createRecipeDto: CreateRecipeDto, user: User) => {
+        return Promise.resolve(createRecipeDto as Recipe);
       },
       findOne: (id: number) => {
-        return Promise.resolve(recipeStub());
+        return Promise.resolve(recipeStub() as Recipe);
       },
       findAll: () => {
-        return Promise.resolve([recipeStub(), recipeStub()]);
+        return Promise.resolve([recipeStub(), recipeStub()] as Recipe[]);
       },
       update: (id: number, updateUserDto: UpdateRecipeDto) => {
         const recipe = recipeStub();
         Object.assign(recipe, updateUserDto);
-        return Promise.resolve(recipe);
+        return Promise.resolve(recipe as Recipe);
       },
       remove: (id: number) => {
         return Promise.resolve();
@@ -47,7 +49,10 @@ describe('RecipeController', () => {
     stub = recipeStub();
   });
   it('create Recipe POST /recipe', async () => {
-    const recipe = await controller.create(recipeStub());
+    const recipe = await controller.create(
+      recipeStub(),
+      userStub().id.toString(),
+    );
     expect(recipe.id).toEqual(stub.id);
   });
 

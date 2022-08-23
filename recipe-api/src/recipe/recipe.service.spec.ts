@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { User } from 'src/user/entities/user.entity';
+import { userStub } from 'src/user/stubs/user.stub';
 import { Ingredient } from './entities/ingredient.entity';
 import { Recipe } from './entities/recipe.entity';
 import { RecipeService } from './recipe.service';
@@ -43,7 +45,7 @@ describe('RecipeService', () => {
 
   it('Recipe create', async () => {
     let dto = recipeStub();
-    const recipe = await service.create(dto);
+    const recipe = await service.create(dto, userStub() as User);
 
     expect(service).toBeDefined();
     expect(recipe.id).toEqual(dto.id);
@@ -70,7 +72,7 @@ describe('RecipeService', () => {
   it('Recipe addIngredient', async () => {
     let dto = recipeStub();
     const ingredient = UpdateIngredientStub();
-    const recipe = await service.create(dto);
+    const recipe = await service.create(dto, userStub() as User);
     const recipe_added = await service.addIngredient(+recipe.id, ingredient);
 
     expect(service).toBeDefined();
@@ -79,7 +81,7 @@ describe('RecipeService', () => {
   it('Recipe removeIngredient', async () => {
     let dto = recipeStub();
     const ingredient = UpdateIngredientStub();
-    const recipe = await service.create(dto);
+    const recipe = await service.create(dto, userStub() as User);
 
     const recipe_added = await service.addIngredient(recipe.id, ingredient);
 
@@ -95,7 +97,7 @@ describe('RecipeService', () => {
   it('Recipe updateIngredient', async () => {
     let dto = recipeStub();
     const ingredient = UpdateIngredientStub();
-    const recipe = await service.create(dto);
+    const recipe = await service.create(dto, userStub() as User);
     const recipe_added = await service.addIngredient(+recipe.id, ingredient);
     expect(service).toBeDefined();
     console.log(recipe.ingredient);

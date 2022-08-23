@@ -6,10 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IngredientService } from './ingredient/ingredient.service';
 import { Ingredient } from './entities/ingredient.entity';
 import { UserModule } from 'src/user/user.module';
-import { UserService } from 'src/user/user.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Recipe, Ingredient]), UserModule],
   controllers: [RecipeController],
-  providers: [RecipeService, IngredientService, UserService],
+  providers: [RecipeService, IngredientService],
 })
 export class RecipeModule {}
