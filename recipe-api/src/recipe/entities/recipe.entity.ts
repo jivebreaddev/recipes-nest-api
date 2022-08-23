@@ -1,3 +1,4 @@
+import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
   Column,
@@ -27,4 +28,7 @@ export class Recipe {
     cascade: true,
   })
   ingredient: Ingredient[];
+
+  @ManyToOne(() => User, (user) => user.recipe)
+  user: User;
 }
