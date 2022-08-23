@@ -11,6 +11,8 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Recipe, (recipe) => recipe.user)
+  @OneToMany(() => Recipe, (recipe) => recipe.user, {
+    cascade: true,
+  })
   recipe: Recipe[];
 }

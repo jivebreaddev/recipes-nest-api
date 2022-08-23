@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
@@ -14,16 +15,28 @@ import { IngredientService } from './ingredient/ingredient.service';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UserService } from 'src/user/user.service';
 @ApiTags('recipe')
 @Controller('recipe')
 export class RecipeController {
   constructor(
     private readonly recipeService: RecipeService,
+    private userService: UserService,
     private ingredientService: IngredientService,
   ) {}
-  @Post()
-  create(@Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipeService.create(createRecipeDto);
+  // This one has to work by adding cookie to hmm
+  // 1. Cookie  -> middleware
+  // 2. Username -> Using service -> Dependencies
+  @Post(':username')
+  async create(
+    @Body() createRecipeDto: CreateRecipeDto,
+    @Param('username') username: string,
+  ) {
+    const user = await this.userService.findOne(username);
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+    return this.recipeService.create(createRecipeDto, user);
   }
   @Get()
   findAll() {
