@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { updatedUserStub } from 'src/user/stubs/update-user.stub';
-import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
+
+import { userStub } from '../user/stubs/user.stub';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { Recipe } from './entities/recipe.entity';
@@ -9,37 +10,43 @@ import { RecipeController } from './recipe.controller';
 import { RecipeService } from './recipe.service';
 import { recipeStub } from './stubs/recipe.stub';
 import { updatedRecipeStub } from './stubs/recipe.updated.stub';
-
+import { UserService } from '../user/user.service';
 describe('RecipeController', () => {
   let controller: RecipeController;
   let fakeRecipeService: Partial<RecipeService>;
-  let stub: Recipe;
+  let fakeUserService: Partial<UserService>;
+  let stub: CreateRecipeDto;
   beforeEach(async () => {
     fakeRecipeService = {
-      create: (CreateRecipeDto: CreateRecipeDto) => {
-        return Promise.resolve(CreateRecipeDto);
+      create: (createRecipeDto: CreateRecipeDto, user: User) => {
+        return Promise.resolve(createRecipeDto as Recipe);
       },
       findOne: (id: number) => {
-        return Promise.resolve(recipeStub());
+        return Promise.resolve(recipeStub() as Recipe);
       },
       findAll: () => {
-        return Promise.resolve([recipeStub(), recipeStub()]);
+        return Promise.resolve([recipeStub(), recipeStub()] as Recipe[]);
       },
       update: (id: number, updateUserDto: UpdateRecipeDto) => {
         const recipe = recipeStub();
         Object.assign(recipe, updateUserDto);
-        return Promise.resolve(recipe);
+        return Promise.resolve(recipe as Recipe);
       },
       remove: (id: number) => {
         return Promise.resolve();
       },
     };
-
+    fakeUserService = {
+      findOne: (username: string) => {
+        return Promise.resolve(userStub() as User);
+      },
+    };
     const module: TestingModule = await Test.createTestingModule({
       controllers: [RecipeController],
       providers: [
         { provide: RecipeService, useValue: fakeRecipeService },
         { provide: IngredientService, useValue: fakeRecipeService },
+        { provide: UserService, useValue: fakeUserService },
       ],
     }).compile();
 
@@ -47,7 +54,10 @@ describe('RecipeController', () => {
     stub = recipeStub();
   });
   it('create Recipe POST /recipe', async () => {
-    const recipe = await controller.create(recipeStub());
+    const recipe = await controller.create(
+      recipeStub(),
+      userStub().id.toString(),
+    );
     expect(recipe.id).toEqual(stub.id);
   });
 

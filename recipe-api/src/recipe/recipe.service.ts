@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
@@ -7,6 +8,7 @@ import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { Ingredient } from './entities/ingredient.entity';
 import { Recipe } from './entities/recipe.entity';
+import { recipeStub } from './stubs/recipe.stub';
 
 @Injectable()
 export class RecipeService {
@@ -15,7 +17,7 @@ export class RecipeService {
     private ingredientRepository: Repository<Ingredient>,
     @InjectRepository(Recipe) private repository: Repository<Recipe>,
   ) {}
-  async create(createRecipeDto: CreateRecipeDto) {
+  async create(createRecipeDto: CreateRecipeDto, user: User) {
     const recipe = this.repository.create({
       title: createRecipeDto.title,
       description: createRecipeDto.description,
@@ -23,7 +25,7 @@ export class RecipeService {
       price: createRecipeDto.price,
       ingredient: [],
     });
-
+    recipe.user = user;
     return await this.repository.save(recipe);
   }
   async findAll() {

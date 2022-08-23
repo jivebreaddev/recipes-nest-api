@@ -5,8 +5,9 @@ import { Recipe } from './entities/recipe.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IngredientService } from './ingredient/ingredient.service';
 import { Ingredient } from './entities/ingredient.entity';
+import { UserModule } from 'src/user/user.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([Recipe, Ingredient])],
+  imports: [TypeOrmModule.forFeature([Recipe, Ingredient]), UserModule],
   controllers: [RecipeController],
   providers: [RecipeService, IngredientService],
 })

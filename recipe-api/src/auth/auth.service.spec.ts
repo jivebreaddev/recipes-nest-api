@@ -1,7 +1,8 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import { userStub } from '../user/stubs/user.stub';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
@@ -36,6 +37,7 @@ describe('AuthService', () => {
           provide: UserService,
           useValue: fakeUserService,
         },
+        JwtService,
       ],
     }).compile();
 
