@@ -6,12 +6,15 @@ import {
   Patch,
   Param,
   NotFoundException,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -19,12 +22,12 @@ export class UserController {
     private authService: AuthService,
     private readonly userService: UserService,
   ) {}
-
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   findAll() {
     return this.userService.findAll();
   }
-
+  @UseGuards(AuthGuard('jwt'))
   @Get(':username')
   findOne(@Param('username') username: string) {
     const user = this.userService.findOne(username);
@@ -33,7 +36,7 @@ export class UserController {
     }
     return user;
   }
-
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':username')
   update(
     @Param('username') username: string,
@@ -47,10 +50,9 @@ export class UserController {
     const user = await this.authService.signUp(body.username, body.password);
     return user;
   }
-
+  @UseGuards(AuthGuard('local'))
   @Post('signin')
-  async signIn(@Body() body: CreateUserDto) {
-    const user = await this.authService.signIn(body.username, body.password);
-    return user;
+  async signIn(@Request() req) {
+    return this.authService.signIn(req.user);
   }
 }
