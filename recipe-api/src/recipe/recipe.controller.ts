@@ -15,7 +15,7 @@ import { IngredientService } from './ingredient/ingredient.service';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 @ApiTags('recipe')
 @Controller('recipe')
 export class RecipeController {
@@ -27,6 +27,8 @@ export class RecipeController {
   // This one has to work by adding cookie to hmm
   // 1. Cookie  -> middleware
   // 2. Username -> Using service -> Dependencies
+  // Considering how complicated the tests going to become by adding dependencies,
+  // 1 was way better solution.
   @Post(':username')
   async create(
     @Body() createRecipeDto: CreateRecipeDto,
