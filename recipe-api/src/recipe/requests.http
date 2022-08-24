@@ -17,20 +17,28 @@ content-type: application/json
 
 ### Get an estimate for an existing vehicle -> url is string and received as string
 
-Get http://localhost:3000/recipe/agsdafsdvec
+Get http://localhost:3000/recipe
+
+### Get an estimate for an existing vehicle -> url is string and received as string
+
+Get http://localhost:3000/recipe/1
 
 
 ### Add Ingredient to the recipe
 
 POST http://localhost:3000/recipe/1/ingredient
+content-type: application/json
+
 {
-  "name": "aspharagus",
+  "name": "aspharagus"
 }
 ### Remove Ingredient to the recipe
 
-POST http://localhost:3000/recipe/1/ingredient
+DELETE http://localhost:3000/recipe/1/ingredient
+content-type: application/json 
+
 {
-  "name": "aspharagus",
+  "name": "aspharagus"
 }
 ### GET Ingredient to the recipe
 

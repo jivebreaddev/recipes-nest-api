@@ -57,7 +57,7 @@ export class RecipeController {
     return this.recipeService.remove(+id);
   }
 
-  @Patch(':id/ingredient')
+  @Post(':id/ingredient')
   create_ingredient(
     @Param('id') id: string,
     @Body() createIngredientDto: CreateIngredientDto,

@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Ingredient } from './ingredient.entity';
-
+@Entity()
 export class Recipe {
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,8 +29,6 @@ export class Recipe {
   })
   ingredient: Ingredient[];
 
-  @ManyToOne(() => User, (user) => user.recipe, {
-    cascade: true,
-  })
+  @ManyToOne(() => User, (user) => user.recipe)
   user: User;
 }
