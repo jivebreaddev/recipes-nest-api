@@ -11,4 +11,7 @@ jobs:
       PORT: 3000
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build
