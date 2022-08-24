@@ -1,9 +1,9 @@
 name: Recipe CI
 on:
   push:
-    branches: ['main', 'prod']
+    branches: [main, prod]
   pull_request:
-    branches: ['main', 'prod']
+    branches: [main, prod]
 jobs:
   build:
     env:
