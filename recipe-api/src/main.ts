@@ -6,7 +6,9 @@ import { LocalStrategy } from './auth/local.strategy';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   var passport = require('passport');
+  const cookieParser = require('cookie-parser');
   passport.use(LocalStrategy);
+  app.use(cookieParser());
   const config = new DocumentBuilder()
     .setTitle('Recipe API')
     .setVersion('1.0')

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -50,7 +50,7 @@ export class RecipeService {
   async remove(id: number) {
     const recipe = await this.repository.findOneBy({ id: id });
     if (!recipe) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException('recipe not found');
     }
 
     this.repository.remove(recipe);
@@ -60,7 +60,11 @@ export class RecipeService {
     recipeid: number,
     updateIngredientDto: UpdateIngredientDto,
   ) {
+    console.log(recipeid);
     const recipe = await this.findOne(recipeid);
+    if (!recipe) {
+      throw new NotFoundException('recipe not found');
+    }
     const ingredient = await this.ingredientRepository.create(
       updateIngredientDto,
     );

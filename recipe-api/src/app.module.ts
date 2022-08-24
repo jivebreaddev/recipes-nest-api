@@ -2,13 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user/entities/user.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RecipeModule } from './recipe/recipe.module';
-import { Recipe } from './recipe/entities/recipe.entity';
-import { Ingredient } from './recipe/entities/ingredient.entity';
 import { AuthModule } from './auth/auth.module';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -19,14 +16,26 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        return {
-          type: 'sqlite',
-          database: config.get<string>('POSTGRES_DB'),
-          synchronize: true,
-          entities: [User, Recipe, Ingredient],
-        };
+        return config.get<string>('NODE_ENV') === 'test' ||
+          config.get<string>('NODE_ENV') === 'dev'
+          ? {
+              type: 'sqlite',
+              database: config.get<string>('DB_SCHEMA'),
+              synchronize: true,
+              autoLoadEntities: true,
+            }
+          : {
+              type: 'postgres',
+              username: config.get<string>('DB_USER'),
+              password: config.get<string>('DB_PASSWORD'),
+              host: config.get<string>('DB_HOST'),
+              database: config.get<string>('DB_SCHEMA'),
+              synchronize: true,
+              port: +process.env.DB_PORT,
+              entities: ['dist/**/**/*.entity{.ts,.js}'],
+            };
       },
-    }),
+    } as TypeOrmModuleOptions),
     UserModule,
     RecipeModule,
     AuthModule,

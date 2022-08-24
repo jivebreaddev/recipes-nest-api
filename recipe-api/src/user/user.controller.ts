@@ -8,6 +8,7 @@ import {
   NotFoundException,
   UseGuards,
   Request,
+  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +16,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { Response } from 'express';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
@@ -50,9 +52,13 @@ export class UserController {
     const user = await this.authService.signUp(body.username, body.password);
     return user;
   }
+
   @UseGuards(AuthGuard('local'))
   @Post('signin')
-  async signIn(@Request() req) {
-    return this.authService.signIn(req.user);
+  async signIn(@Request() req, @Res({ passthrough: true }) res: Response) {
+    const access_token = this.authService.signIn(req.user);
+    res.cookie('Authentication', access_token);
+
+    return access_token;
   }
 }
