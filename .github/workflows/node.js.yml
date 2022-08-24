@@ -15,39 +15,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-        uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
-      - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up -d --build
+    - name: Start containers
+      run: docker-compose -f "docker-compose.yml" up -d --build
 
-      - name: Install node
-        uses: actions/setup-node@v2
-        with:
+    - name: Install node
+      uses: actions/setup-node@v2
+      with:
           node-version: '16'
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Setting .env
-        run: |
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> recipe-api/.env.test
-          echo "DB_USER=${{ secrets.DB_USER }}" >> recipe-api/.env.test
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> recipe-api/.env.test
-          echo "POSTGRES_DB_PREFIX=${{ secrets.POSTGRES_DB_PREFIX }}" >> recipe-api/.env.test
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> recipe-api/.env.test
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> recipe-api/.env.test
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> recipe-api/.env.test
-          
+    - name: Setting .env
+      run: |
+        echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> recipe-api/.env.test
+        echo "DB_USER=${{ secrets.DB_USER }}" >> recipe-api/.env.test
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> recipe-api/.env.test
+        echo "POSTGRES_DB_PREFIX=${{ secrets.POSTGRES_DB_PREFIX }}" >> recipe-api/.env.test
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> recipe-api/.env.test
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> recipe-api/.env.test
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> recipe-api/.env.test
 
-      - name: Run tests
-        - run: npm ci
-       - run: npm run build --if-present
-       - run: npm run test --prefix recipe-api
 
-      - name: Stop containers
-        if: always()
-      -  run: docker-compose -f "docker-compose.yml" down
+    - name: Run tests
+      run: npm ci --prefix nest-recipe
+          npm run test --prefix recipe-api 
+
+    - name: Stop containers
+      if: always()
+      run: docker-compose -f "docker-compose.yml" down
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -66,7 +65,7 @@ jobs:
         REPOSITORY: $ {{ secrets.ECR_REPO }}
         IMAGE_TAG: ${{ github.sha }}
         run: |
-        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       
