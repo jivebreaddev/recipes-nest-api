@@ -16,4 +16,23 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
+    - name: Install node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Setting .env
+      run: |
+        echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> recipe-api/.env.test
+        echo "DB_USER=${{ secrets.DB_USER }}" >> recipe-api/.env.test
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> recipe-api/.env.test
+        echo "POSTGRES_DB_PREFIX=${{ secrets.POSTGRES_DB_PREFIX }}" >> recipe-api/.env.test
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> recipe-api/.env.test
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> recipe-api/.env.test
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> recipe-api/.env.test
+            
+
