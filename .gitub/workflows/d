@@ -1,3 +1,7 @@
+
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build
+
 - name: Install node
         uses: actions/setup-node@v2
         with:
