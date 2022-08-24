@@ -42,9 +42,9 @@ jobs:
             
 
       - name: Run tests
-        run: npm ci
-        run: npm run build --if-present
-        run: npm run test --prefix recipe-api
+        run: npm ci --prefix nest-recipe
+        run: npm run build --prefix nest-recipe
+        run: npm run test --prefix recipe-api 
 
       - name: Stop containers
         if: always()
