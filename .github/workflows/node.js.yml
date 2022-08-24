@@ -34,5 +34,11 @@ jobs:
         echo "DB_HOST=${{ secrets.DB_HOST }}" >> recipe-api/.env.test
         echo "DB_PORT=${{ secrets.DB_PORT }}" >> recipe-api/.env.test
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> recipe-api/.env.test
-            
+    - name: Run tests
+      run: |
+        npm ci --prefix nest-recipe
+        npm run build --prefix nest-recipe
+        npm run test --prefix recipe-api 
+    - name: Start containers
+      run: docker-compose -f "docker-compose.yml" up -d --build
 
