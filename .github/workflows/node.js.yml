@@ -34,8 +34,7 @@ jobs:
         echo "DB_HOST=${{ secrets.DB_HOST }}" >> ./recipe-api/.env.test
         echo "DB_PORT=${{ secrets.DB_PORT }}" >> ./recipe-api/.env.test
         echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./recipe-api/.env.test
-        cat ./recipe-api/.env.test
-        ls -a .
+        ls -a ./recipe-api
         ls -a ${{ github.workspace }}
     - name: Start containers
       run: docker-compose --env-file ./recipe-api/.env.test -f "docker-compose.yml" up -d --build
