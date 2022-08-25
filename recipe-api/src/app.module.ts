@@ -33,6 +33,11 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
               synchronize: true,
               port: +process.env.DB_PORT,
               entities: ['dist/**/**/*.entity{.ts,.js}'],
+              migrations: ['dist/migrations/*{.ts,.js}'],
+              cli: {
+                migrationsDir: 'src/migrations',
+              },
+              migrationsTableName: 'migrations',
             };
       },
     } as TypeOrmModuleOptions),

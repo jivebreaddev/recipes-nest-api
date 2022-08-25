@@ -29,12 +29,14 @@ export class AuthService {
   }
   async signIn(user: any) {
     const payload = { username: user.username, sub: user.userId };
+    
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
   async signUp(username: string, password: string) {
+
     const users = await this.userService.findOne(username);
     if (users) {
       throw new BadRequestException('username in use');

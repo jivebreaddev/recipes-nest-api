@@ -4,16 +4,13 @@ services:
       context: ./
     volumes:
       - ./recipe-api:/usr/src/app  
-    env_file:
-    - ./recipe-api/.env.${NODE_ENV}
     command: npm run start:${NODE_ENV}
     ports:
       - 3000:3000
   postgres:
     image: postgres
     restart: always
-    env_file:
-    - ./recipe-api/.env.${NODE_ENV}
+
     environment:
       POSTGRES_DB: ${DB_SCHEMA}_${NODE_ENV}
       POSTGRES_USER: ${DB_USER}
