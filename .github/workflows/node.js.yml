@@ -5,15 +5,9 @@ on:
   pull_request:
     branches: ["main", "prod"]
 jobs:
-  build:
-    env:
-      CI: true
-      PORT: 3000
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x]
-    runs-on: ubuntu-latest
+
   job1:
+   
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,6 +22,12 @@ jobs:
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> recipe-api/.env.test
           echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> recipe-api/.env.test
   job2:
+    env:
+      CI: true
+      PORT: 3000
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
     runs-on: ubuntu-latest
     needs: job1
     steps:
