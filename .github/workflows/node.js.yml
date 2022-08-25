@@ -16,56 +16,26 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
-    - name: Start containers
-      run: docker-compose -f "docker-compose.yml" up -d --build
-
     - name: Install node
       uses: actions/setup-node@v2
       with:
-          node-version: '16'
-          cache: 'npm'
+        node-version: '16'
+        cache: 'npm'
 
     - name: Install dependencies
       run: npm install
 
     - name: Setting .env
       run: |
-        echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> recipe-api/.env.test
-        echo "DB_USER=${{ secrets.DB_USER }}" >> recipe-api/.env.test
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> recipe-api/.env.test
-        echo "POSTGRES_DB_PREFIX=${{ secrets.POSTGRES_DB_PREFIX }}" >> recipe-api/.env.test
-        echo "DB_HOST=${{ secrets.DB_HOST }}" >> recipe-api/.env.test
-        echo "DB_PORT=${{ secrets.DB_PORT }}" >> recipe-api/.env.test
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> recipe-api/.env.test
-
-
-    - name: Run tests
-      run: npm ci --prefix nest-recipe
-          npm run test --prefix recipe-api 
-
-    - name: Stop containers
-      if: always()
-      run: docker-compose -f "docker-compose.yml" down
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-        
-    - name: Build, tag, and push docker image to Amazon ECR
-      env:
-        REGISTRY: $ {{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: $ {{ secrets.ECR_REPO }}
-        IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-
-      
+        echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> ./recipe-api/.env.test
+        echo "DB_USER=${{ secrets.DB_USER }}" >> ./recipe-api/.env.test
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> ./recipe-api/.env.test
+        echo "POSTGRES_DB_PREFIX=${{ secrets.POSTGRES_DB_PREFIX }}" >> ./recipe-api/.env.test
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> ./recipe-api/.env.test
+        echo "DB_SCHEMA=${{ secrets.DB_SCHEMA }}" >> ./recipe-api/.env.test
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> ./recipe-api/.env.test
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./recipe-api/.env.test
+        ls -a ./recipe-api
+        ls -a ${{ github.workspace }}
+    - name: Start containers
+      run: docker-compose --env-file ./recipe-api/.env.test -f "docker-compose.yml" up -d --build
