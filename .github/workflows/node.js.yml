@@ -5,23 +5,7 @@ on:
   pull_request:
     branches: ["main", "prod"]
 jobs:
-
-  job1:
-   
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setting .env
-        run: |
-          echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> recipe-api/.env.test
-          echo "DB_USER=${{ secrets.DB_USER }}" >> recipe-api/.env.test
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> recipe-api/.env.test
-          echo "POSTGRES_DB_PREFIX=${{ secrets.POSTGRES_DB_PREFIX }}" >> recipe-api/.env.test
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> recipe-api/.env.test
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> recipe-api/.env.test
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> recipe-api/.env.test
-  job2:
+  build:
     env:
       CI: true
       PORT: 3000
@@ -29,18 +13,26 @@ jobs:
       matrix:
         node-version: [14.x, 16.x]
     runs-on: ubuntu-latest
-    needs: job1
     steps:
-      - name: Install node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-          cache: 'npm'
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up -d --build
-          
-
+    - name: Setting .env
+      run: |
+        echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> ./recipe-api/.env.test
+        echo "DB_USER=${{ secrets.DB_USER }}" >> ./recipe-api/.env.test
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> ./recipe-api/.env.test
+        echo "POSTGRES_DB_PREFIX=${{ secrets.POSTGRES_DB_PREFIX }}" >> ./recipe-api/.env.test
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> ./recipe-api/.env.test
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> ./recipe-api/.env.test
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./recipe-api/.env.test
+    - name: Start containers
+      run: docker-compose --env-file ./recipe-api/.env.test -f "docker-compose.yml" up -d --build
