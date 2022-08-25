@@ -39,6 +39,9 @@ jobs:
         ls -a ${{ github.workspace }}
     - name: Start containers
       run: docker-compose --env-file ./recipe-api/.env.test -f "docker-compose.yml" up -d --build
+    - name: Stop containers
+      if: always()
+      run: docker-compose -f "docker-compose.yml" down
   test:
     env:
       CI: true
@@ -48,9 +51,26 @@ jobs:
         node-version: [14.x, 16.x]
     runs-on: ubuntu-latest
     steps:
+    - name: Setting .env
+      run: |
+        echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> ./recipe-api/.env.test
+        echo "DB_USER=${{ secrets.DB_USER }}" >> ./recipe-api/.env.test
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> ./recipe-api/.env.test
+        echo "POSTGRES_DB_PREFIX=${{ secrets.POSTGRES_DB_PREFIX }}" >> ./recipe-api/.env.test
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> ./recipe-api/.env.test
+        echo "DB_SCHEMA=${{ secrets.DB_SCHEMA }}" >> ./recipe-api/.env.test
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> ./recipe-api/.env.test
+        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./recipe-api/.env.test
+        ls -a ./recipe-api
+        ls -a ${{ github.workspace }}
+    - name: Start containers
+      run: docker-compose --env-file ./recipe-api/.env.test -f "docker-compose.yml" up -d --build
     - name: Run tests
       run: |
         docker-compose run --rm recipe sh -c "ls -a"
         docker-compose run --rm recipe sh -c "npm ci"
         docker-compose run --rm recipe sh -c "npm run build"
         docker-compose run --rm recipe sh -c "npm run test"
+    - name: Stop containers
+      if: always()
+      run: docker-compose -f "docker-compose.yml" down
