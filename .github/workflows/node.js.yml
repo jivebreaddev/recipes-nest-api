@@ -39,3 +39,8 @@ jobs:
         ls -a ${{ github.workspace }}
     - name: Start containers
       run: docker-compose --env-file ./recipe-api/.env.test -f "docker-compose.yml" up -d --build
+    - name: Run tests
+      run: |
+        docker-compose run --rm recipes-nest-api_recipe sh -c "npm ci --prefix recipe-api"
+        docker-compose run --rm recipes-nest-api_recipe sh -c "npm run build --prefix recipe-api"
+        docker-compose run --rm recipes-nest-api_recipe sh -c "npm run test --prefix recipe-api"
