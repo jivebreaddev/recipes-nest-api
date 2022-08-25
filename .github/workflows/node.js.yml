@@ -39,6 +39,15 @@ jobs:
         ls -a ${{ github.workspace }}
     - name: Start containers
       run: docker-compose --env-file ./recipe-api/.env.test -f "docker-compose.yml" up -d --build
+  test:
+    env:
+      CI: true
+      PORT: 3000
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+    runs-on: ubuntu-latest
+    steps:
     - name: Run tests
       run: |
         docker-compose run --rm recipe sh -c "ls -a"
