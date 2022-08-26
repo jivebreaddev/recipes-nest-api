@@ -70,5 +70,5 @@ jobs:
           REPOSITORY: $ {{ secrets.ECR_REPO }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build --compress -t ${{ secrets.REGISTRY }}/${{ secrets.REPOSITORY }}:$ {{ secrets.IMAGE_TAG }} .
-          docker push ${{secrets.REGISTRY}}/${{secrets.REPOSITORY}}:${{secrets.IMAGE_TAG}}
+          docker build --compress -t $REGISTRY /$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
