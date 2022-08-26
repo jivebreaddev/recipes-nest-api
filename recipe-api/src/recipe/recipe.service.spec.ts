@@ -44,7 +44,7 @@ describe('RecipeService', () => {
   });
 
   it('Recipe create', async () => {
-    let dto = recipeStub();
+    const dto = recipeStub();
     const recipe = await service.create(dto, userStub() as User);
 
     expect(service).toBeDefined();
@@ -70,7 +70,7 @@ describe('RecipeService', () => {
     expect(recipe.id).toEqual(updatedRecipeStub().id);
   });
   it('Recipe addIngredient', async () => {
-    let dto = recipeStub();
+    const dto = recipeStub();
     const ingredient = UpdateIngredientStub();
     const recipe = await service.create(dto, userStub() as User);
     const recipe_added = await service.addIngredient(+recipe.id, ingredient);
@@ -79,7 +79,7 @@ describe('RecipeService', () => {
     expect(recipe_added.ingredient).toHaveLength(1);
   });
   it('Recipe removeIngredient', async () => {
-    let dto = recipeStub();
+    const dto = recipeStub();
     const ingredient = UpdateIngredientStub();
     const recipe = await service.create(dto, userStub() as User);
 
@@ -95,7 +95,7 @@ describe('RecipeService', () => {
     expect(recipe_removed.ingredient).toHaveLength(0);
   });
   it('Recipe updateIngredient', async () => {
-    let dto = recipeStub();
+    const dto = recipeStub();
     const ingredient = UpdateIngredientStub();
     const recipe = await service.create(dto, userStub() as User);
     const recipe_added = await service.addIngredient(+recipe.id, ingredient);

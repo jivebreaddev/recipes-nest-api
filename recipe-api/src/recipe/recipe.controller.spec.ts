@@ -72,7 +72,7 @@ describe('RecipeController', () => {
     expect(recipes.length).toEqual(2);
   });
   it('update Recipe POST /recipe', async () => {
-    let stub = updatedRecipeStub();
+    const stub = updatedRecipeStub();
     const recipe = await controller.update(
       updatedRecipeStub().id.toString(),
       stub,
