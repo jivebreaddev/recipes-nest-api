@@ -9,19 +9,33 @@
 ## CI 구성
 ![2  CI구성](https://user-images.githubusercontent.com/89639413/186843615-392362ce-05c0-4aa9-8dc6-c140206ec636.png)
 
-## 구현된 기능들
+## 구현된 기능들과 배웠던 부분들
  **1. REST API**
- 
+  - TypeORM Module 사용하기
+  - ormconfig.json, ormconfig.js로 설정하기
+  - ManytoOne Entity 적용
+  - DTO 적용하기
+  - DI container 적용하기
+  - .env file 적용하는것
+  
  **2. Github Action으로 CI [이미지 빌딩, ECR로 푸시]**
- 
+  - Github Actions 사용법
+  
  **3. Jest Unit Test**
+ - Mock
+ - auto Mocking
  
  **4. GraphQL**
- 
+  - GraphQL에 대한 Concept[Resolver, graphql schema]
+  
  **5. Docker Compose**
- 
+  - .env settings
+   
  **6. Auth with Jwt Token && Cookie**
- 
+  - Passport.js 라이브러리 사용법
+  - Useguards
+  - Nest Req 핸들링 파이프라인 
+  
  **7. Swagger [OpenAPI]**
  
 ## 사용하시기전
