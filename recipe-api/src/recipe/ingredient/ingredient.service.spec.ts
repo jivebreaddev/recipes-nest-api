@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken, InjectRepository } from '@nestjs/typeorm';
-import { UpdateIngredientDto } from '../dto/update-ingredient.dto';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { Ingredient } from '../entities/ingredient.entity';
 import { UpdateIngredientStub } from '../stubs/ingredient.stub';
 import { CreateIngredientStub } from '../stubs/ingredients.update.stub';
@@ -46,7 +45,7 @@ describe('IngredientService', () => {
   });
 
   it('Ingredient create', async () => {
-    let dto = CreateIngredientStub();
+    const dto = CreateIngredientStub();
     const sample_recipe = recipeStub();
     const ingredient = await service.create(dto, sample_recipe.id);
 

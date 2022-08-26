@@ -1,15 +1,9 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Recipe } from './recipe.entity';
 @Entity()
 export class Ingredient {
   @PrimaryGeneratedColumn()
-  id: Number;
+  id: number;
   @Column()
   name: string;
 
