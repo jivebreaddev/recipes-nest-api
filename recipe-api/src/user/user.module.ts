@@ -7,6 +7,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { Recipe } from 'src/recipe/entities/recipe.entity';
 import { AuthModule } from 'src/auth/auth.module';
+import { UserResolver } from './user.resolver';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { AuthModule } from 'src/auth/auth.module';
     forwardRef(() => AuthModule),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, UserResolver],
   exports: [UserService],
 })
 export class UserModule {}
